@@ -1,5 +1,5 @@
-    module.exports = function(application){ 
-        application.post('/', function(req, res){
-            res.render('index', { title: 'Express' });
-        });
-    }
+module.exports = function (application) {
+  application.get("/", function (req, res) {
+    application.app.controllers.index.home(application, req, res);
+  });
+};

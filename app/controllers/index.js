@@ -1,3 +1,4 @@
 module.exports.home = function (application, req, res) {
-  res.render("index", { title: "Express" });
+  var validacao = "";
+  res.render("index", {validacao: {}, title: "Express" });
 };

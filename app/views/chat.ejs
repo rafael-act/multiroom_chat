@@ -78,22 +78,8 @@
 			
 			<div class="row participantes" id="participantes" style="display:none">
 				<div class="col-md-1"></div>
-				<div class="col-md-10">
-					<span class="participante">
-						<img src="images/ico_usuario.png" />
-						Jorge
-					</span>
-					
-					<span class="participante">
-						<img src="images/ico_usuario.png" />
-						José
-					</span>
-					
-					<span class="participante">
-						<img src="images/ico_usuario.png" />
-						Fernando
-					</span>
-				</div>
+				<div class="col-md-10" id="pessoas">
+					</div>
 				<div class="col-md-1"></div>
                 
             </div>
@@ -104,8 +90,9 @@
 				<div class="panel-body campo-mensagem">
 						<div class="col-md-12">
 							<div class="input-group">
-								<input type="text" class="form-control" placeholder="Mensagem" name="mensagem">
+								<input type="text" class="form-control" placeholder="Mensagem" id="mensagem">
 								<input type="hidden" name="apelido" id="apelido" value="<%= dadosForm.apelido %>">
+								<input type="hidden" name="apelido_atualizado_nos_clientes" id="apelido_atualizado_nos_clientes" value="0">
 								<span class="input-group-btn">
 									<button class="btn btn-default" type="button" id="enviar_mensagem">Enviar</button>
 								</span>
@@ -124,7 +111,12 @@
 				var mensagem = $("input[name=mensagem]").val();
 				socket.emit('msgParaServidor', 
 				{apelido: $("#apelido").val(),
-				 mensagem: mensagem});
+				 mensagem: mensagem,
+				 apelido_atualizado_nos_clientes: $("#apelido_atualizado_nos_clientes").val()
+				});
+				$("#apelido_atualizado_nos_clientes").val(1);
+				$("#mensagem").val('');
+				window.scrollTo(0,document.body.scrollHeight);
 			});
 
 			socket.on('msgParaCliente',function(data){
@@ -135,6 +127,16 @@
 				html+='</div>';
 
 				$('#dialogos').append(html);
+			})
+
+			socket.on('participantesParaCliente',function(data){console.log(data);
+				var html = '';
+				html+='<span class="participante">';
+				html+='<img src="images/ico_usuario.png" />';
+				html+= data.apelido;
+				html+='</span>';
+
+				$('#pessoas').append(html);
 			})
 		</script>
 	</body>

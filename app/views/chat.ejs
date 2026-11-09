@@ -72,10 +72,6 @@
             <div class="row conversa" id="conversa">
 				<div class="col-md-1"></div>
 				<div class="col-md-10" id="dialogos">
-					<div class="dialogo">
-						<h4>Jorge</h4>
-						<p>Fala José, blz cara?</p>
-					</div>
 				</div>
 				<div class="col-md-1"></div>
             </div>
@@ -106,16 +102,15 @@
 		<nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
 			<div class="container">
 				<div class="panel-body campo-mensagem">
-					<form>
 						<div class="col-md-12">
 							<div class="input-group">
-								<input type="text" class="form-control" placeholder="Mensagem">
+								<input type="text" class="form-control" placeholder="Mensagem" name="mensagem">
+								<input type="hidden" name="apelido" id="apelido" value="<%= dadosForm.apelido %>">
 								<span class="input-group-btn">
-									<button class="btn btn-default" type="button">></button>
+									<button class="btn btn-default" type="button" id="enviar_mensagem">Enviar</button>
 								</span>
 							</div>
 						</div>
-					</form>
 				</div>
 			</div>
 		</nav>		
@@ -125,8 +120,14 @@
 		<script >
 			socket = io('http://localhost:3000');
 
+			$("#enviar_mensagem").click(function(){
+				var mensagem = $("input[name=mensagem]").val();
+				socket.emit('msgParaServidor', 
+				{apelido: $("#apelido").val(),
+				 mensagem: mensagem});
+			});
+
 			socket.on('msgParaCliente',function(data){
-				alert(data.apelido + ': ' + data.mensagem);
 				var html = '';
 				html+='<div class="dialogo">';
 				html+='<h4>'+data.apelido+'</h4>';

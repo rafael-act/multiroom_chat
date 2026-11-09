@@ -16,5 +16,11 @@ io.on('connection', function(socket){
     socket.on('disconnect', function(){
         console.log('Usuario desconectou');
     });
+
+    socket.on('msgParaServidor', function(data){
+        /*dialogos*/
+        socket.emit('msgParaCliente', {apelido: data.apelido, mensagem: data.mensagem});
+        socket.broadcast.emit('msgParaCliente', {apelido: data.apelido, mensagem: data.mensagem});
+    });
 });
 
